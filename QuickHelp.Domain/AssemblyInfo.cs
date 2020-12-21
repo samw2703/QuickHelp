@@ -17,3 +17,4 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("4915e21d-5663-41ea-8964-0885539d264f")]
 [assembly: InternalsVisibleTo("QuickHelp.Domain.Tests")]
+[assembly: InternalsVisibleTo("QuickHelp.Application.Stub")]

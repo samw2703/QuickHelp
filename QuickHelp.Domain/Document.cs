@@ -7,8 +7,8 @@ namespace QuickHelp.Domain
 {
 	public class Document
 	{
-		private readonly DocumentId _id;
-		internal DocumentName Name { get; private set; }
+		internal  DocumentId Id { get; }
+		public DocumentName Name { get; private set; }
 		internal DocumentBody Body { get; private set; }
 		internal bool Deleted { get; private set; }
 		internal bool Pinned { get; private set; }
@@ -17,10 +17,10 @@ namespace QuickHelp.Domain
 
 		private Document(DocumentId id, DocumentName name, DocumentBody body)
 		{
-			_id = id;
+			Id = id;
 			Name = name;
 			Body = body;
-			Raise(new NewDocumentCreated(_id.Value, Name.Value, Body.Value));
+			Raise(new NewDocumentCreated(Id.Value, Name.Value, Body.Value));
 		}
 
 		public static Document CreateNew(DocumentId id, 
@@ -40,21 +40,21 @@ namespace QuickHelp.Domain
 			ValidateDeleted(nameof(Rename));
 
 			Name = newName;
-			Raise(new DocumentRenamed(_id.Value, newName.Value));
+			Raise(new DocumentRenamed(Id.Value, newName.Value));
 		}
 
 		public void Edit(DocumentBody newBody)
 		{
 			ValidateDeleted(nameof(Edit));
 			Body = newBody;
-			Raise(new DocumentEdited(_id.Value, newBody.Value));
+			Raise(new DocumentEdited(Id.Value, newBody.Value));
 		}
 
 		public void Delete()
 		{
 			ValidateDeleted(nameof(Delete));
 			Deleted = true;
-			Raise(new DocumentDeleted(_id.Value));
+			Raise(new DocumentDeleted(Id.Value));
 		}
 
 		public void Pin()
@@ -64,7 +64,7 @@ namespace QuickHelp.Domain
 				return;
 
 			Pinned = true;
-			Raise(new DocumentPinned(_id.Value));
+			Raise(new DocumentPinned(Id.Value));
 		}
 
 		public void Unpin()
@@ -74,7 +74,7 @@ namespace QuickHelp.Domain
 				return;
 
 			Pinned = false;
-			Raise(new DocumentUnpinned(_id.Value));
+			Raise(new DocumentUnpinned(Id.Value));
 		}
 
 		private void ValidateDeleted(string action)
