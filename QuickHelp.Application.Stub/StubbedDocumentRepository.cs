@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using QuickHelp.Domain;
 using QuickHelp.Domain.ValueObjects;
 
@@ -8,7 +9,7 @@ namespace QuickHelp.Application.Stub
 	{
 		public bool Exists( DocumentName name )
 		{
-			return Documents.Get().Any( x => x.Name == name );
+			return Documents.Get().Any( x => x.Name == name && !x.Deleted );
 		}
 
 		public void Save( Document document )
@@ -21,7 +22,7 @@ namespace QuickHelp.Application.Stub
 
 		public Document Get( DocumentId id )
 		{
-			return Documents.Get().SingleOrDefault( x => x.Id == id );
+			return Documents.Get().SingleOrDefault( x => x.Id == id && !x.Deleted );
 		}
 	}
 }

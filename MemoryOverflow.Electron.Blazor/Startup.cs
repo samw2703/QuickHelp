@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using QuickHelp.Application.Stub;
 
 namespace MemoryOverflow.Electron.Blazor
 {
@@ -22,6 +23,7 @@ namespace MemoryOverflow.Electron.Blazor
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            QuickHelpStubDependencies.Register( services );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

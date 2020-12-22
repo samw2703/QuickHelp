@@ -1,0 +1,31 @@
+﻿@page "/Add/{Name?}"
+
+@inject IDocumentRepository DocumentRepository;
+@inject NavigationManager NavigationManager;
+@inject IDocumentRepository DocumentRepository;
+
+@using QuickHelp.Domain
+@using QuickHelp.Domain.ValueObjects
+
+
+<h3>Add</h3>
+
+<AddEditDocument @ref="addEditDocument" Name="@Name" SaveCallback="Save"></AddEditDocument>
+
+@code {
+    [Parameter]
+    public string Name { get; set; }
+
+    private AddEditDocument addEditDocument;
+
+    private void Save()
+        => addEditDocument.Save( CreateDocument );
+    
+
+    private Document CreateDocument()
+        => Document.CreateNew( DocumentId.From( Guid.NewGuid() ),
+            DocumentName.From( addEditDocument.Name ),
+            DocumentBody.From( addEditDocument.Body ),
+            DocumentRepository );
+
+}

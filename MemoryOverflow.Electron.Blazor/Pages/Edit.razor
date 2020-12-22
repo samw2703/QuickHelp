@@ -1,0 +1,47 @@
+﻿@page "/Edit/{Id:guid}"
+
+@inject IDocumentRepository DocumentRepository
+
+@using QuickHelp.Domain
+@using QuickHelp.Domain.ValueObjects
+
+<h3>Edit</h3>
+
+<AddEditDocument @ref="addEditDocument"
+    Name="@document.Name"
+    Body="@document.Body"
+    SaveCallback="Save"/>
+
+
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private Document document;
+    private AddEditDocument addEditDocument;
+
+    protected override void OnInitialized()
+    {
+        document = DocumentRepository.Get( DocumentId.From( Id ) );
+        base.OnInitialized();
+    }
+
+    private void Save()
+    {
+        addEditDocument.Save( UpdateDocument );
+    }
+
+    private Document UpdateDocument()
+    {
+        var editedName = addEditDocument.Name.Trim();
+        if ( document.Name.Value != editedName )
+            document.Rename( DocumentName.From( editedName ), DocumentRepository );
+
+        var editedBody = addEditDocument.Body.Trim();
+        if (document.Body.Value != editedBody.Trim() )
+            document.Edit( DocumentBody.From( editedBody ) );
+
+        return document;
+    }
+}

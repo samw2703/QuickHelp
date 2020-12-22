@@ -1,0 +1,57 @@
+﻿@inject IDocumentRepository DocumentRepository
+@inject NavigationManager NavigationManager
+
+@using QuickHelp.Domain
+@using QuickHelp.Domain.Exceptions
+@using QuickHelp.Domain.ValueObjects
+
+<div class="mb-2">
+    <input class="form-control @invalidNameClass" type="text" @bind="Name" placeholder="Name"/>
+    <div class="invalid-feedback">
+        @validationMessage
+    </div>
+</div>
+<textarea class="document-body form-control mb-2" @bind="Body" placeholder="body"/>
+
+<button class="btn btn-success" @onclick="SaveCallback">Save</button>
+<a href="/" class="btn btn-secondary">Close</a>
+
+@code {
+    [Parameter]
+    public string Name { get; set; }
+
+    [Parameter]
+    public string Body { get; set; }
+
+    [Parameter] 
+    public EventCallback SaveCallback { get; set; }
+
+    private string validationMessage;
+    private string invalidNameClass;
+
+    public void Save( Func<Document> getDocument )
+    {
+        try
+        {
+            DocumentRepository.Save( getDocument() );
+        }
+        catch ( DocumentNameClash )
+        {
+            InvalidateName( $"Document with name {Name} already exists" );
+            return;
+        }
+        catch ( EmptyDocumentName )
+        {
+            InvalidateName( $"Please enter a name" );
+            return;
+        }
+        NavigationManager.NavigateTo( "/" );
+    }
+
+    private void InvalidateName( string message )
+    {
+        validationMessage = message;
+        invalidNameClass = "is-invalid";
+    }
+
+}

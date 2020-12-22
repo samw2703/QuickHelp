@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using QuickHelp.Domain;
 
-namespace QuickHelp.Application.Stub
+namespace QuickHelp.Application.Abstractions
 {
 	public interface IDocumentFilterer
 	{

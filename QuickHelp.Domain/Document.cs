@@ -7,9 +7,9 @@ namespace QuickHelp.Domain
 {
 	public class Document
 	{
-		internal  DocumentId Id { get; }
+		public  DocumentId Id { get; }
 		public DocumentName Name { get; private set; }
-		internal DocumentBody Body { get; private set; }
+		public DocumentBody Body { get; private set; }
 		internal bool Deleted { get; private set; }
 		internal bool Pinned { get; private set; }
 
